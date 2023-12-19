@@ -12,25 +12,47 @@ func main() {
 
 	// Ajoutez quelques mots et définitions au dictionnaire.
 	m["golang"] = "Le meilleur langage de programmation du monde"
-    m["rust"] = "Un langage de programmation système"
+	m["rust"] = "Un langage de programmation système"
 	m["html"] = "Un langage de programmation de balisage utilisé pour créer des pages Web"
 	m["java"] = "Un langage de programmation orienté objet"
 	m["c"] = "Un langage de programmation procédural"
-	
-	// affichez le dictionnaire.
-	fmt.Println(m)
 
-	//Utilisez la méthode Get pour afficher la définition d'un mot spécifique.
-	fmt.Println(m["golang"])
+	// add a word and its definition to the dictionary
+	add(m, "python", "Un langage de programmation interprété")
 
-	//Utilisez la méthode Remove pour supprimer un mot du dictionnaire.
-	delete(m, "c")
+	// entrez un mot et affichez sa définition.
+	get(m, "golang")
 
-	//Appelez la méthode List pour obtenir la liste triée des mots et de leurs définitions.
-	
-	//Appelez la méthode Len pour obtenir le nombre de mots dans le dictionnaire.
-    list := list.New()
+	// Supprimez un mot du dictionnaire.
+	remove(m, "java")
+
+	// Affichez tous les mots et définitions du dictionnaire.
+	display(m)
+}
+
+// add a word and its definition to the dictionary
+func add(m map[string]string, key string, value string) {
+	m[key] = value
+}
+
+func get(m map[string]string, key string,) {
+	// print key value
+	fmt.Println(m[key])
+
+}
+
+func remove(m map[string]string, key string) {
+	delete(m, key)
+}
+
+func display(m map[string]string) {
+	//list
+	l := list.New()
 	for key, value := range m {
-		list.PushBack(key + " : " + value)
+		l.PushBack(key)
+		l.PushBack(value)
+	}
+	for e := l.Front(); e != nil; e = e.Next() {
+		fmt.Println(e.Value)
 	}
 }
