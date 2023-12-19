@@ -1,6 +1,7 @@
 package main
 
 import (
+	"container/list"
 	"fmt"
 )
 
@@ -26,6 +27,10 @@ func main() {
 	delete(m, "c")
 
 	//Appelez la méthode List pour obtenir la liste triée des mots et de leurs définitions.
-	fmt.Println(m)
-
+	
+	//Appelez la méthode Len pour obtenir le nombre de mots dans le dictionnaire.
+    list := list.New()
+	for key, value := range m {
+		list.PushBack(key + " : " + value)
+	}
 }
