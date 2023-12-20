@@ -10,21 +10,21 @@ import (
 
 // dico structure
 type Dico struct {
-	filename string
-	couple   map[string]string
+	Filename string
+	Couple   map[string]string
 }
 
 func New(filename string) *Dico {
 	d := &Dico{
-		filename: filename,
-		couple:   make(map[string]string),
+		Filename: filename,
+		Couple:   make(map[string]string),
 	}
 	d.loadFromFile()
 	return d
 }
 
 func (d *Dico) loadFromFile() {
-	file, err := os.Open(d.filename)
+	file, err := os.Open(d.Filename)
 	if err != nil {
 		return // File doesn't exist or error reading, so an empty map will be initialized
 	}
@@ -37,20 +37,20 @@ func (d *Dico) loadFromFile() {
 		if len(parts) == 2 {
 			key := strings.TrimSpace(parts[0])
 			value := strings.TrimSpace(parts[1])
-			d.couple[key] = value
+			d.Couple[key] = value
 		}
 	}
 }
 
 func (d *Dico) saveToFile() error {
-	file, err := os.Create(d.filename)
+	file, err := os.Create(d.Filename)
 	if err != nil {
 		return err
 	}
 	defer file.Close()
 
 	writer := bufio.NewWriter(file)
-	for key, value := range d.couple {
+	for key, value := range d.Couple {
 		_, err := fmt.Fprintf(writer, "%s : %s\n", key, value)
 		if err != nil {
 			return err
@@ -60,7 +60,7 @@ func (d *Dico) saveToFile() error {
 }
 
 func (d *Dico) Add(key string, value string) {
-	d.couple[key] = value
+	d.Couple[key] = value
 	err := d.saveToFile()
 	if err != nil {
 		fmt.Println("Error:", err)
@@ -70,8 +70,8 @@ func (d *Dico) Add(key string, value string) {
 
 // get a word and its definition from the dictionary with the key word
 func (d *Dico) Get(word string) {
-	if d.couple[word] != "" {
-		fmt.Println(word + " : " + d.couple[word])
+	if d.Couple[word] != "" {
+		fmt.Println(word + " : " + d.Couple[word])
 	} else {
 		fmt.Println("This word doesn't exist")
 	}
@@ -79,8 +79,8 @@ func (d *Dico) Get(word string) {
 
 // remove a word and its definition from the dictionary
 func (d *Dico) Remove(word string) {
-	if d.couple[word] != "" {
-		delete(d.couple, word)
+	if d.Couple[word] != "" {
+		delete(d.Couple, word)
 		err := d.saveToFile()
 		if err != nil {
 			fmt.Println("Error:", err)
@@ -91,16 +91,15 @@ func (d *Dico) Remove(word string) {
 	}
 }
 
-// display all words and definitions from the dictionary
-func (d *Dico) Display() {
-	for key, value := range d.couple {
+// get all words and definitions from the dictionary
+func (d *Dico) GetAll() {
+	for key, value := range d.Couple {
 		fmt.Println(key + " : " + value)
 	}
 }
 
-//Open the file and read it in notepad
+// Open the file and read it in notepad
 func (d *Dico) OpenInNotpad() {
-	cmd := exec.Command("notepad.exe", d.filename)
+	cmd := exec.Command("notepad.exe", d.Filename)
 	cmd.Run()
 }
-
