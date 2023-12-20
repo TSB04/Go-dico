@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"os/exec"
 	"strings"
 )
 
@@ -67,8 +68,6 @@ func (d *Dico) Add(key string, value string) {
 	fmt.Println(key + " has been added")
 }
 
-// Other methods (Get, Remove, Display) remain unchanged...
-
 // get a word and its definition from the dictionary with the key word
 func (d *Dico) Get(word string) {
 	if d.couple[word] != "" {
@@ -98,3 +97,10 @@ func (d *Dico) Display() {
 		fmt.Println(key + " : " + value)
 	}
 }
+
+//Open the file and read it in notepad
+func (d *Dico) OpenInNotpad() {
+	cmd := exec.Command("notepad.exe", d.filename)
+	cmd.Run()
+}
+
