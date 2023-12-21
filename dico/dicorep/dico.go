@@ -59,35 +59,36 @@ func (d *Dico) saveToFile() error {
 	return writer.Flush()
 }
 
-func (d *Dico) Add(key string, value string) {
+func (d *Dico) Add(key string, value string, resultChan chan error) {
 	d.Couple[key] = value
 	err := d.saveToFile()
 	if err != nil {
-		fmt.Println("Error:", err)
+		resultChan <- err
+		return
 	}
-	fmt.Println(key + " has been added")
+	resultChan <- nil
 }
 
-// get a word and its definition from the dictionary with the key word
-func (d *Dico) Get(word string) {
-	if d.Couple[word] != "" {
-		fmt.Println(word + " : " + d.Couple[word])
+// get a key and its definition from the dictionary with the key key
+func (d *Dico) Get(key string) {
+	if d.Couple[key] != "" {
+		fmt.Println(key + " : " + d.Couple[key])
 	} else {
-		fmt.Println("This word doesn't exist")
+		fmt.Println("This key doesn't exist")
 	}
 }
 
-// remove a word and its definition from the dictionary
-func (d *Dico) Remove(word string) {
-	if d.Couple[word] != "" {
-		delete(d.Couple, word)
+// remove a key and its definition from the dictionary
+func (d *Dico) Remove(key string) {
+	if d.Couple[key] != "" {
+		delete(d.Couple, key)
 		err := d.saveToFile()
 		if err != nil {
 			fmt.Println("Error:", err)
 		}
-		fmt.Println(word + " has been removed")
+		fmt.Println(key + " has been removed")
 	} else {
-		fmt.Println("This word doesn't exist")
+		fmt.Println("This key doesn't exist")
 	}
 }
 
@@ -98,6 +99,7 @@ func (d *Dico) GetAll() {
 	}
 }
 
+// some personal activities for fun and learning
 // Open the file and read it in notepad
 func (d *Dico) OpenInNotpad() {
 	cmd := exec.Command("notepad.exe", d.Filename)
